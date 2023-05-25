@@ -10,14 +10,24 @@ public class EquationSolverServer implements EquationSolver {
         if (discriminant > 0) {
             double root1 = (-b + Math.sqrt(discriminant)) / (2 * a);
             double root2 = (-b - Math.sqrt(discriminant)) / (2 * a);
+
+            System.out.println("Equação resolvida: Raiz 1 = " + root1 + ", Raiz 2 = " + root2);
+
             return new double[]{root1, root2};
         } else if (discriminant == 0) {
             double root = -b / (2 * a);
+
+            System.out.println("Equação resolvida: Raiz única = " + root);
+
             return new double[]{root, root};
         } else {
             // Raízes complexas
             double realPart = -b / (2 * a);
             double imaginaryPart = Math.sqrt(-discriminant) / (2 * a);
+
+            System.out.println("Equação resolvida: Raiz 1 = " + realPart + " + " + imaginaryPart + "i, " +
+                    "Raiz 2 = " + realPart + " - " + imaginaryPart + "i");
+
             return new double[]{realPart, imaginaryPart, realPart, -imaginaryPart};
         }
     }
@@ -31,6 +41,14 @@ public class EquationSolverServer implements EquationSolver {
             registry.rebind("EquationSolver", stub);
 
             System.out.println("Servidor pronto para receber solicitações.");
+
+            // Aguarda o encerramento do servidor
+            System.out.println("Pressione Enter para encerrar o servidor.");
+            System.in.read();
+
+            UnicastRemoteObject.unexportObject(server, true);
+
+            System.out.println("Servidor encerrado.");
         } catch (Exception e) {
             System.err.println("Erro no servidor: " + e.toString());
             e.printStackTrace();
